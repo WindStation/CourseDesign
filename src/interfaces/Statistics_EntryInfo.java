@@ -24,8 +24,10 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import model.Entry;
 import model.Goods;
+import model.SupplierInfo;
 import service.EntryService;
 import service.GoodsService;
+import service.SupplierService;
 
 public class Statistics_EntryInfo {
 
@@ -111,7 +113,7 @@ public class Statistics_EntryInfo {
 				}
 				// 如果有单号筛选条件
 				if (entryId_text.getText() != null && !entryId_text.getText().trim().equals("")) {
-					criteria.add("`id` = '" + entryId_text.getText() + "'");
+					criteria.add("`id` = " + entryId_text.getText() + " ");
 				}
 				// 如果有货品名称筛选条件
 				if (goodname_text.getText() != null && !goodname_text.getText().trim().equals("")) {
@@ -128,7 +130,12 @@ public class Statistics_EntryInfo {
 
 				// TODO 供货商选项框
 				if (supplierSelector.getText() != null && !supplierSelector.getText().trim().equals("")) {
-
+					// 这里所有的供应商信息都是以id·name的形式保存的
+					// 因此按照·这个符号进行分割，然后再取首项就能获得供应商的id
+					String content = supplierSelector.getText();
+					String[] splitStrings = content.split("·");
+					String targetId = splitStrings[0];
+					criteria.add("`supplier_id` = '"+targetId+"'");
 				}
 
 				// 总的筛选条件
@@ -247,6 +254,12 @@ public class Statistics_EntryInfo {
 
 		supplierSelector = new Combo(shell, SWT.NONE);
 		supplierSelector.setBounds(910, 124, 111, 32);
+		
+		// 下面给供应商选项卡添加供应商的选项
+		List<SupplierInfo> suppliers = SupplierService.findAll();
+		suppliers.forEach(s->{
+			supplierSelector.add(s.getId()+"·"+s.getName());
+		});
 
 		queryAllBtn = new Button(shell, SWT.NONE);
 		queryAllBtn.addSelectionListener(new SelectionAdapter() {

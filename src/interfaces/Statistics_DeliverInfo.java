@@ -1,5 +1,11 @@
 package interfaces;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -7,11 +13,20 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+
+import model.CustomerInfo;
+import model.Deliver;
+import model.Goods;
+import service.CustomerService;
+import service.DeliverService;
+import service.GoodsService;
 
 public class Statistics_DeliverInfo {
 
@@ -157,6 +172,80 @@ public class Statistics_DeliverInfo {
 		customerName_text.setBounds(872, 129, 135, 30);
 
 		Button queryDelivery = new Button(shell, SWT.NONE);
+		queryDelivery.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// 条件查询
+				table.removeAll();
+				List<String> criteria = new ArrayList<>();
+				// 按照时间筛选
+				if(selectByTime.getSelection()) {
+					LocalDateTime queryStart = LocalDateTime.of(startDate.getYear(), startDate.getMonth() + 1,
+							startDate.getDay(), 0, 0, 0);
+					LocalDateTime queryEnd = LocalDateTime.of(terminateDate.getYear(), terminateDate.getMonth() + 1,
+							terminateDate.getDay(), 23, 59, 59);
+					if (!queryStart.isBefore(queryEnd)) {
+						MessageBox messageBox = new MessageBox(shell);
+						messageBox.setText("提示");
+						messageBox.setMessage("输入的查询时间不合法，请检查后重新选择时间范围！");
+						messageBox.open();
+						return;
+					}
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+					String sql = "`outDate` between '" + queryStart.format(formatter) + "' and '"
+							+ queryEnd.format(formatter) + "'";
+					criteria.add(sql);
+				}
+				
+				// 按照出货单号筛选
+				if(deliveryId_text.getText()!=null && !deliveryId_text.getText().trim().equals("")) {
+					criteria.add("`id` = "+String.valueOf(deliveryId_text.getText())+" ");
+				}
+				
+				// 按照货品名称筛选
+				if (goodname_text.getText() != null && !goodname_text.getText().trim().equals("")) {
+					List<Goods> candidateGoods = GoodsService.findByName(goodname_text.getText());
+					List<String> subCriteria = new ArrayList<>();
+					candidateGoods.forEach(good -> {
+						subCriteria.add("`good_id` = '" + good.getId() + "'");
+					});
+					if (subCriteria.size() > 0) {
+						criteria.add(subCriteria.stream().collect(Collectors.joining(" or ")));
+					}
+
+				}
+				
+				// 按照客户姓名筛选
+				if (customerName_text.getText()!=null && !customerName_text.getText().trim().equals("")) {
+					List<CustomerInfo> customers = CustomerService.findByName(customerName_text.getText());
+					List<String> subCriteria = new ArrayList<>();
+					customers.forEach(c->{
+						subCriteria.add("customer_id = '"+c.getId()+"'");
+					});
+					if (subCriteria.size()>0) {
+						criteria.add(subCriteria.stream().collect(Collectors.joining(" or ")));
+					}
+				}
+				
+				String totalCriteria = criteria.stream().collect(Collectors.joining(" and "));
+				// 为了防止条件全为空，需要在这里判断一下，如果有条件直接在头上加上where
+				if (totalCriteria.length() > 0) {
+					totalCriteria = " where " + totalCriteria;
+				}
+
+				System.out.println(totalCriteria);
+				
+				List<Deliver> delivers = DeliverService.find(totalCriteria);
+				delivers.forEach(d->{
+					TableItem item = new TableItem(table, SWT.NONE);
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+					item.setText(new String[] { String.valueOf(d.getId()), d.getOutDate().format(formatter),
+							d.getGoodId(), String.valueOf(d.getAmount()), String.valueOf(d.getPrice()), null,
+							d.getOperatorId(), null, null, d.getNote() });
+				});
+				
+			}
+		});
 		queryDelivery.setBounds(809, 229, 96, 33);
 		queryDelivery.setText("查询");
 
@@ -165,7 +254,15 @@ public class Statistics_DeliverInfo {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// 全部查询
-
+				table.removeAll();
+				List<Deliver> delivers = DeliverService.findAll();
+				delivers.forEach(d->{
+					TableItem item = new TableItem(table, SWT.NONE);
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+					item.setText(new String[] { String.valueOf(d.getId()), d.getOutDate().format(formatter),
+							d.getGoodId(), String.valueOf(d.getAmount()), String.valueOf(d.getPrice()), null,
+							d.getOperatorId(), null, null, d.getNote() });
+				});
 			}
 		});
 		queryAllDelivery.setText("查询全部");

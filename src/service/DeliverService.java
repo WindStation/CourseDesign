@@ -29,7 +29,7 @@ public class DeliverService {
 	}
 
 	public static Deliver find(int targetId) {
-		String sql = "select * from `deliver` where `id` = " + String.valueOf(targetId) + "' ";
+		String sql = "select * from `deliver` where `id` = " + String.valueOf(targetId) + " ";
 		ResultSet resultSet = DBOperation.query(sql);
 		Deliver deliver = null;
 		try {

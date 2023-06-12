@@ -6,7 +6,7 @@ public class SupplierInfo {
 
 	private String id;
 
-	private String gender;
+//	private String gender;
 
 	private String address;
 
@@ -34,13 +34,13 @@ public class SupplierInfo {
 		return address;
 	}
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	public String getGender() {
-		return this.gender;
-	}
+//	public void setGender(String gender) {
+//		this.gender = gender;
+//	}
+//
+//	public String getGender() {
+//		return this.gender;
+//	}
 
 	public String getTel() {
 		return tel;
