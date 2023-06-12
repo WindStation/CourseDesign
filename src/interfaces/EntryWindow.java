@@ -1,16 +1,27 @@
 package interfaces;
 
 import org.eclipse.swt.widgets.Display;
+import java.util.List;
+
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
 import org.eclipse.wb.swt.SWTResourceManager;
+
+import control.Index;
+import model.Goods;
+import model.WarehouseInfo;
+import service.GoodsService;
+import service.WarehouseService;
+
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class EntryWindow {
 
@@ -59,6 +70,8 @@ public class EntryWindow {
 		shell.setSize(1327, 747);
 		shell.setText("进货入库");
 		shell.setLayout(null);
+		List<Goods> goods= GoodsService.findAll();
+		List<WarehouseInfo> warehouses = WarehouseService.findAllWarehouses();
 		
 		Label lblNewLabel = new Label(shell, SWT.NONE);
 		lblNewLabel.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 15, SWT.NORMAL));
@@ -142,6 +155,15 @@ public class EntryWindow {
 		lblid_2.setText("操作员id：");
 		
 		Button add = new Button(shell, SWT.NONE);
+		add.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				
+				
+				
+			}
+		});
 		add.setBounds(410, 377, 114, 34);
 		add.setText("添加商品");
 		
@@ -155,8 +177,20 @@ public class EntryWindow {
 		Combo GoodsCategory = new Combo(shell, SWT.NONE);
 		GoodsCategory.setBounds(158, 157, 150, 32);
 		
+		for (Goods good : goods) {
+		    GoodsCategory.add(good.getCategory());
+		}
+		// 设置默认选项
+		GoodsCategory.select(0); // 设置第一个选项为默认选项
+		
+
+		
+		
+		
 		Combo GoodUnit = new Combo(shell, SWT.NONE);
 		GoodUnit.setBounds(461, 159, 160, 32);
+		
+		
 		
 		GoodsAmount = new Text(shell, SWT.BORDER);
 		GoodsAmount.setBounds(778, 157, 150, 30);
@@ -167,8 +201,14 @@ public class EntryWindow {
 		Combo Supplier = new Combo(shell, SWT.NONE);
 		Supplier.setBounds(158, 236, 150, 32);
 		
-		Combo WarehouseId = new Combo(shell, SWT.NONE);
-		WarehouseId.setBounds(461, 236, 160, 32);
+		
+		Combo warehouseCom = new Combo(shell, SWT.NONE);
+		warehouseCom.setBounds(461, 236, 160, 32);
+		for (WarehouseInfo warehouse : warehouses) {
+		    warehouseCom.add(warehouse.getName());
+		}
+		// 设置默认选项
+		warehouseCom.select(0); // 设置第一个选项为默认选项
 		
 		Producer = new Text(shell, SWT.BORDER);
 		Producer.setBounds(779, 236, 149, 30);
@@ -185,16 +225,47 @@ public class EntryWindow {
 		DateTime dateTime = new DateTime(shell, SWT.BORDER);
 		dateTime.setBounds(461, 90, 160, 33);
 		
+		
+		//商品编号
 		Combo goodsId_1 = new Combo(shell, SWT.NONE);
 		goodsId_1.setBounds(778, 86, 150, 32);
+		for (Goods good : goods) {
+		    GoodsCategory.add(good.getId());
+		}
+		// 设置默认选项
+		GoodsCategory.select(0); // 设置第一个选项为默认选项
 		
+		//操作员的静态数据
 		employer = new Text(shell, SWT.BORDER);
 		employer.setEditable(false);
 		employer.setBounds(778, 321, 150, 30);
+		//employer.setText(Index.currentOperator.getId());
 		
+		//商品名称
 		goodName = new Text(shell, SWT.BORDER);
 		goodName.setEditable(false);
 		goodName.setBounds(1078, 86, 154, 30);
+		// 商品编号列表框选择事件监听器
+		goodsId_1.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		        // 获取当前选择的商品编号
+		        int selectedIndex = goodsId_1.getSelectionIndex();
+		        if (selectedIndex != -1) {
+		            String selectedId = goodsId_1.getItem(selectedIndex);
+		            
+		            // 根据选择的商品编号查询商品信息
+		            Goods selectedGood = GoodsService.find(selectedId);
+		            
+		            // 更新商品名称文本框的值
+		            goodName.setText(selectedGood.getName());
+		        }
+		    }
+		});
+
+		// 设置默认选项
+		goodsId_1.select(0); // 设置第一个选项为默认选项
+		
 		
 		Button button = new Button(shell, SWT.NONE);
 		button.addMouseListener(new MouseAdapter() {

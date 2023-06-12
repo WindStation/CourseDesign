@@ -2,6 +2,8 @@ package service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import configuration.DBOperation;
 import model.WarehouseInfo;
@@ -41,6 +43,28 @@ public class WarehouseService {
 		}
 		return warehouse;
 	}
+	
+	public static List<WarehouseInfo> findAllWarehouses() {
+	    String sql = "SELECT * FROM `warehouseinfo`";
+	    ResultSet resultSet = DBOperation.query(sql);
+	    List<WarehouseInfo> warehouses = new ArrayList<>();
+	    try {
+	        while (resultSet.next()) {
+	            String id = resultSet.getString("id");
+	            String name = resultSet.getString("name");
+	            int capacity = resultSet.getInt("capacity");
+	            String tel = resultSet.getString("director_Tel");
+	            String note = resultSet.getString("note");
+	            WarehouseInfo warehouse = new WarehouseInfo(id, name, capacity, tel, note);
+	            warehouses.add(warehouse);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        System.out.println("获取仓库信息错误");
+	    }
+	    return warehouses;
+	}
+
 
 	public static boolean update(WarehouseInfo warehouse) {
 		// 传入参数的id代表要更改的管理员，剩余字段如果不为null则代表进行更改
@@ -66,7 +90,7 @@ public class WarehouseService {
 			flag = (flag == false) ? (result > 0) : true;
 		}
 		if (newTel != null) {
-			String sql = basesql + "`directorTel` = '" + newTel + "' where id = '" + targetId + "'";
+			String sql = basesql + "`director_Tel` = '" + newTel + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}

@@ -24,6 +24,22 @@ public class GoodsService {
 		String sql = "delete from `goodsinfo` where `id`='" + targetId + "'";
 		DBOperation.update(sql);
 	}
+	
+	public static List<Goods> findAll() {
+	    String sql = "SELECT * FROM `goodsinfo`";
+	    ResultSet resultSet = DBOperation.query(sql);
+	    List<Goods> goodsList = new ArrayList<>();
+	    try {
+	        while (resultSet.next()) {
+	            goodsList.add(parseGoods(resultSet));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        System.out.println("goodservice:findAll查询错误");
+	    }
+	    return goodsList;
+	}
+
 
 	public static Goods find(String targetId) {
 		String sql = "select * from `goodsinfo` where `id` =  '" + targetId + "'";
@@ -90,22 +106,22 @@ public class GoodsService {
 			flag = (flag == false) ? (result > 0) : true;
 		}
 		if (newWarehouse != null) {
-			String sql = basesql + "`warehouse` = '" + newWarehouse + "' where id = '" + targetId + "'";
+			String sql = basesql + "`warehouse_id` = '" + newWarehouse + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}
 		if (newPrice != 0) {
-			String sql = basesql + "`directorTel` = '" + newPrice + "' where id = '" + targetId + "'";
+			String sql = basesql + "`price` = '" + newPrice + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}
 		if (newUnit != null) {
-			String sql = basesql + "`directorTel` = '" + newUnit + "' where id = '" + targetId + "'";
+			String sql = basesql + "`unit` = '" + newUnit + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}
 		if (newProducer != null) {
-			String sql = basesql + "`directorTel` = '" + newProducer + "' where id = '" + targetId + "'";
+			String sql = basesql + "`producer` = '" + newProducer + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}
@@ -122,11 +138,11 @@ public class GoodsService {
 		String name = resultSet.getString("name");
 		int amount = resultSet.getInt("amount");
 		String category = resultSet.getString("category");
-		String warehouse = resultSet.getString("warehouse");
+		String warehouse = resultSet.getString("warehouse_id");
 		float price = resultSet.getFloat("price");
 		String unit = resultSet.getString("unit");
 		String producer = resultSet.getString("producer");
-		String note = resultSet.getString("note");
+		String note = resultSet.getString("notes");
 		return new Goods(id, name, amount, category, warehouse, price, unit, producer, note);
 	}
 }
