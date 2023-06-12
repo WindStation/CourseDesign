@@ -4,10 +4,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.wb.swt.SWTResourceManager;
+//import org.eclipse.wb.swt.SWTResourceManager;
 
 import service.GoodsService;
-import service.OperatorService;
 import model.*;
 
 public class Daily_Goods {

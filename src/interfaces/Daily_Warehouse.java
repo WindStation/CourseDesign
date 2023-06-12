@@ -7,9 +7,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
 
-import model.Operator;
 import model.WarehouseInfo;
-import service.OperatorService;
 import service.WarehouseService;
 
 import org.eclipse.swt.widgets.Table;
