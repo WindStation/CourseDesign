@@ -40,7 +40,7 @@ public class Inventory_Ship {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(450, 300);
+		shell.setSize(896, 598);
 		shell.setText("SWT Application");
 
 	}
