@@ -259,6 +259,7 @@ public class Statistics_EntryInfo {
 		
 		// 下面给供应商选项卡添加供应商的选项
 		List<SupplierInfo> suppliers = SupplierService.findAll();
+		supplierSelector.add("");
 		suppliers.forEach(s->{
 			supplierSelector.add(s.getId()+"·"+s.getName());
 		});

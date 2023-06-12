@@ -7,7 +7,7 @@ import configuration.DBOperation;
 
 public class PurchaserService {
 	public static String find(String targetId) {
-		String sql = "select * from `Purshaserinfo` where `id` =  '" + targetId + "'";
+		String sql = "select * from `Purchaserinfo` where `id` =  '" + targetId + "'";
 		ResultSet resultSet = DBOperation.query(sql);
 		String name = null;
 		try {
