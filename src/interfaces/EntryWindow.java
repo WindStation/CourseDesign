@@ -1,7 +1,10 @@
 package interfaces;
 
 import org.eclipse.swt.widgets.Display;
+
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
@@ -9,9 +12,17 @@ import org.eclipse.swt.SWT;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import control.Index;
+import model.CheckerInfo;
 import model.Goods;
+import model.PurchaserInfo;
+import model.SupplierInfo;
 import model.WarehouseInfo;
+import model.Entry;
+import service.CheckerService;
+import service.EntryService;
 import service.GoodsService;
+import service.PurchaserService;
+import service.SupplierService;
 import service.WarehouseService;
 
 import org.eclipse.swt.widgets.Button;
@@ -26,14 +37,22 @@ import org.eclipse.swt.events.SelectionEvent;
 public class EntryWindow {
 
 	protected Shell shell;
-	private Text inOrder;
 	private Text GoodsAmount;
 	private Text GoodsPrice;
 	private Text Producer;
 	private Text Note;
 	private Text employer;
 	private Text goodName;
-
+	private Text goodsClass;
+	private Text unit;
+	private Combo goodsId_1;
+	private Combo Supplier=null;
+	private Combo warehouseCom = null;
+	
+	
+	private Combo BuyerId = null;
+	private Combo QcId = null;
+	private DateTime dateTime =null;
 	/**
 	 * Launch the application.
 	 * @param args
@@ -72,17 +91,17 @@ public class EntryWindow {
 		shell.setLayout(null);
 		List<Goods> goods= GoodsService.findAll();
 		List<WarehouseInfo> warehouses = WarehouseService.findAllWarehouses();
+		List<CheckerInfo> checkerInfos =CheckerService.findAll();
+		List<PurchaserInfo> buyers =PurchaserService.findAll(); 
+		List<SupplierInfo> supps= SupplierService.findAll();
+		
+		
 		
 		Label lblNewLabel = new Label(shell, SWT.NONE);
 		lblNewLabel.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 15, SWT.NORMAL));
 		lblNewLabel.setAlignment(SWT.CENTER);
 		lblNewLabel.setBounds(505, 20, 182, 53);
 		lblNewLabel.setText("进货入库");
-		
-		Label orderId = new Label(shell, SWT.NONE);
-		orderId.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 11, SWT.NORMAL));
-		orderId.setBounds(50, 84, 91, 39);
-		orderId.setText("单号：");
 		
 		Label date = new Label(shell, SWT.NONE);
 		date.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 11, SWT.NORMAL));
@@ -151,14 +170,73 @@ public class EntryWindow {
 		
 		Label lblid_2 = new Label(shell, SWT.NONE);
 		lblid_2.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 11, SWT.NORMAL));
-		lblid_2.setBounds(655, 321, 102, 39);
+		lblid_2.setBounds(50, 84, 102, 39);
 		lblid_2.setText("操作员id：");
 		
 		Button add = new Button(shell, SWT.NONE);
 		add.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
+				// 获取选项框中的数据
+		        String selectedGoodsId = goodsId_1.getText();
+		        String selectedGoodsName = goodName.getText();
+		        String selectedGoodsCategory = goodsClass.getText();
+		        String selectedGoodsUnit = unit.getText();
+		        String selectedGoodsAmount = GoodsAmount.getText();
+		        int goodsAmount = Integer.parseInt(selectedGoodsAmount);
+		        String selectedGoodsPrice = GoodsPrice.getText();
+		        float goodsPrice = Float.parseFloat(selectedGoodsPrice);
+		        String selectedSupplier = Supplier.getText();
+		        String selectedWarehouse = warehouseCom.getText();
+		        String selectedProducer = Producer.getText();
+		        String selectedNote = Note.getText();
+		        String selectedBuyerId = BuyerId.getText();
+		        String[] parts = selectedBuyerId.split("\\."); // 使用点号作为分隔符拆分字符串
+		        String selectedId = parts[0]; // 获取拆分后的第一部分，即 ID
+		        String selectedQcId = QcId.getText();
+		       
+		        String selectedOperatorId = employer.getText();
+		        int year = dateTime.getYear();
+		        int month = dateTime.getMonth() + 1; // Month index starts from 0, so increment by 1
+		        int day = dateTime.getDay();
+		        int hour = dateTime.getHours();
+		        int minute = dateTime.getMinutes();
+
+		        LocalDateTime localDateTime = LocalDateTime.of(year, month, day, hour, minute);
+		        // 创建相应的类对象
+		        
+		        WarehouseInfo selectedWarehouseInfo = WarehouseService.find(selectedWarehouse);
+		        //selectedWarehouseInfo.set
+		        
+
+		        // 构建其他类对象，根据需要自行添加
+
+		        // 执行相应的操作，例如存储到数据库
+		        // 注意：以下代码只是示例，你需要根据具体情况自行修改
+		        // 添加商品
+		        
+		        // 入库操作
+		        Entry entry = new Entry(localDateTime,selectedGoodsId,goodsPrice,goodsAmount,selectedQcId,Index.currentOperator.getId(),
+		        		selectedSupplier,selectedId,selectedNote);
+		        EntryService.insert(entry);
+
+		        // 清空文本框
+		        goodsId_1.setText("");
+		        goodName.setText("");
+		        goodsClass.setText("");
+		        unit.setText("");
+		        GoodsAmount.setText("");
+		        GoodsPrice.setText("");
+		        Supplier.setText("");
+		        warehouseCom.setText("");
+		        Producer.setText("");
+		        Note.setText("");
+		        BuyerId.setText("");
+		        QcId.setText("");
+		        // 其他文本框清空，根据需要自行添加
+
+		        // 提示添加成功或进行其他操作
+		        System.out.println("商品添加成功");
 				
 				
 				
@@ -171,24 +249,7 @@ public class EntryWindow {
 		button_1.setBounds(590, 377, 114, 34);
 		button_1.setText("取消");
 		
-		inOrder = new Text(shell, SWT.BORDER);
-		inOrder.setBounds(158, 86, 150, 30);
 		
-		Combo GoodsCategory = new Combo(shell, SWT.NONE);
-		GoodsCategory.setBounds(158, 157, 150, 32);
-		
-		for (Goods good : goods) {
-		    GoodsCategory.add(good.getCategory());
-		}
-		// 设置默认选项
-		GoodsCategory.select(0); // 设置第一个选项为默认选项
-		
-
-		
-		
-		
-		Combo GoodUnit = new Combo(shell, SWT.NONE);
-		GoodUnit.setBounds(461, 159, 160, 32);
 		
 		
 		
@@ -198,11 +259,13 @@ public class EntryWindow {
 		GoodsPrice = new Text(shell, SWT.BORDER);
 		GoodsPrice.setBounds(1082, 157, 150, 30);
 		
-		Combo Supplier = new Combo(shell, SWT.NONE);
+		Supplier = new Combo(shell, SWT.NONE);
 		Supplier.setBounds(158, 236, 150, 32);
+		for(SupplierInfo supp :supps) {
+			Supplier.add(supp.getId());
+		}
 		
-		
-		Combo warehouseCom = new Combo(shell, SWT.NONE);
+		warehouseCom = new Combo(shell, SWT.NONE);
 		warehouseCom.setBounds(461, 236, 160, 32);
 		for (WarehouseInfo warehouse : warehouses) {
 		    warehouseCom.add(warehouse.getName());
@@ -216,30 +279,38 @@ public class EntryWindow {
 		Note = new Text(shell, SWT.BORDER);
 		Note.setBounds(1082, 236, 150, 30);
 		
-		Combo BuyerId = new Combo(shell, SWT.NONE);
+		BuyerId = new Combo(shell, SWT.NONE);
 		BuyerId.setBounds(158, 321, 150, 32);
+		for(PurchaserInfo buy:buyers ) {
+			BuyerId.add(buy.getId()+'.'+buy.getName());
+		}
 		
-		Combo QcId = new Combo(shell, SWT.NONE);
+		//质检员
+		QcId = new Combo(shell, SWT.NONE);
 		QcId.setBounds(461, 321, 160, 32);
+		for(CheckerInfo check:checkerInfos) {
+			QcId.add(check.getId());
+		}
 		
-		DateTime dateTime = new DateTime(shell, SWT.BORDER);
+		dateTime = new DateTime(shell, SWT.BORDER);
 		dateTime.setBounds(461, 90, 160, 33);
 		
 		
 		//商品编号
-		Combo goodsId_1 = new Combo(shell, SWT.NONE);
+		goodsId_1 = new Combo(shell, SWT.NONE);
 		goodsId_1.setBounds(778, 86, 150, 32);
 		for (Goods good : goods) {
-		    GoodsCategory.add(good.getId());
+		    goodsId_1.add(good.getId());
 		}
 		// 设置默认选项
-		GoodsCategory.select(0); // 设置第一个选项为默认选项
+		goodsId_1.select(0); // 设置第一个选项为默认选项
 		
 		//操作员的静态数据
 		employer = new Text(shell, SWT.BORDER);
 		employer.setEditable(false);
-		employer.setBounds(778, 321, 150, 30);
+		employer.setBounds(158, 86, 150, 30);
 		//employer.setText(Index.currentOperator.getId());
+		employer.setText(Index.currentOperator.getId());
 		
 		//商品名称
 		goodName = new Text(shell, SWT.BORDER);
@@ -263,8 +334,7 @@ public class EntryWindow {
 		    }
 		});
 
-		// 设置默认选项
-		goodsId_1.select(0); // 设置第一个选项为默认选项
+		
 		
 		
 		Button button = new Button(shell, SWT.NONE);
@@ -281,6 +351,49 @@ public class EntryWindow {
 		});
 		button.setBounds(772, 377, 114, 34);
 		button.setText("返回");
+		
+		//商品名称监听
+		goodsClass = new Text(shell, SWT.BORDER);
+		goodsClass.setEditable(false);
+		goodsClass.setBounds(158, 166, 150, 30);
+		goodsId_1.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		        // 获取当前选择的商品分类
+		        int selectedIndex = goodsId_1.getSelectionIndex();
+		        if (selectedIndex != -1) {
+		            String selectedClass = goodsId_1.getItem(selectedIndex);
+		            
+		            // 根据选择的商品分类查询商品信息
+		            Goods selectedGood = GoodsService.find(selectedClass);
+		            
+		            // 更新商品名称文本框的值
+		            goodsClass.setText(selectedGood.getName());
+		        }
+		    }
+		});
+
+		
+		
+		unit = new Text(shell, SWT.BORDER);
+		unit.setEditable(false);
+		unit.setBounds(461, 166, 160, 30);
+		goodsId_1.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		        // 获取当前选择的商品分类
+		        int selectedIndex = goodsId_1.getSelectionIndex();
+		        if (selectedIndex != -1) {
+		            String selectedClass = goodsId_1.getItem(selectedIndex);
+		            
+		            // 根据选择的商品分类查询商品信息
+		            Goods selectedGood = GoodsService.find(selectedClass);
+		            
+		            // 更新商品名称文本框的值
+		            unit.setText(selectedGood.getName());
+		        }
+		    }
+		});
 
 	}
 }

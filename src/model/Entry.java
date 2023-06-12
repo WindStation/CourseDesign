@@ -94,6 +94,19 @@ public class Entry {
 		this.note = note;
 	}
 
+	public Entry(LocalDateTime entryDate, String goodId, float price, int amount, String checkerId,
+			String operatorId, String supplierId, String purchaserId, String note) {
+		this.entryDate = entryDate;
+		this.goodId = goodId;
+		this.price = price;
+		this.amount = amount;
+		this.checkerId = checkerId;
+		this.operatorId = operatorId;
+		this.supplierId = supplierId;
+		this.purchaserId = purchaserId;
+		this.note = note;
+	}
+	
 	public Entry(int id, LocalDateTime entryDate, String goodId, float price, int amount, String checkerId,
 			String operatorId, String supplierId, String purchaserId, String note) {
 		this.id = id;
