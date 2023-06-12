@@ -25,8 +25,11 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import model.Entry;
 import model.Goods;
 import model.SupplierInfo;
+import service.CheckerService;
 import service.EntryService;
 import service.GoodsService;
+import service.OperatorService;
+import service.PurchaserService;
 import service.SupplierService;
 
 public class Statistics_EntryInfo {
@@ -128,7 +131,7 @@ public class Statistics_EntryInfo {
 
 				}
 
-				// TODO 供货商选项框
+				// 供货商选项框
 				if (supplierSelector.getText() != null && !supplierSelector.getText().trim().equals("")) {
 					// 这里所有的供应商信息都是以id·name的形式保存的
 					// 因此按照·这个符号进行分割，然后再取首项就能获得供应商的id
@@ -149,13 +152,12 @@ public class Statistics_EntryInfo {
 				List<Entry> entries = EntryService.find(totalCriteria);
 
 				table.removeAll();
-				// TODO 等到校验员等类写好了再完善此处的属性
 				entries.forEach(en -> {
 					TableItem item = new TableItem(table, SWT.NONE);
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					item.setText(new String[] { String.valueOf(en.getId()), en.getDate().format(formatter),
-							en.getGoodId(), String.valueOf(en.getAmount()), String.valueOf(en.getPrice()), null,
-							en.getOperatorId(), null, null, en.getNote() });
+							en.getGoodId(), String.valueOf(en.getAmount()), String.valueOf(en.getPrice()), CheckerService.find(en.getCheckerId()),
+							OperatorService.find(en.getOperatorId()).getName(), SupplierService.find(en.getSupplierId()).getName(), PurchaserService.find(en.getPurchaserId()), en.getNote() });
 				});
 
 			}
@@ -267,14 +269,14 @@ public class Statistics_EntryInfo {
 			public void widgetSelected(SelectionEvent e) {
 				table.removeAll();
 				// 查询全部
-				// TODO 等到校验员等类写好了再完善此处的属性
 				List<Entry> entries = EntryService.findAll();
 				entries.forEach(en -> {
 					TableItem item = new TableItem(table, SWT.NONE);
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					item.setText(new String[] { String.valueOf(en.getId()), en.getDate().format(formatter),
-							en.getGoodId(), String.valueOf(en.getAmount()), String.valueOf(en.getPrice()), null,
-							en.getOperatorId(), null, null, en.getNote() });
+							en.getGoodId(), String.valueOf(en.getAmount()), String.valueOf(en.getPrice()), 
+							CheckerService.find(en.getCheckerId()),OperatorService.find(en.getOperatorId()).getName(), 
+							SupplierService.find(en.getSupplierId()).getName(), PurchaserService.find(en.getPurchaserId()), en.getNote()  });
 				});
 			}
 		});

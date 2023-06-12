@@ -25,6 +25,22 @@ public class SupplierService {
 		return suppliers;
 	}
 	
+	public static SupplierInfo find(String targetId) {
+		String sql = "select * from `supplierinfo` where `id` = '"+targetId+"'";
+		SupplierInfo info = null;
+		ResultSet resultSet = DBOperation.query(sql);
+		try {
+			while(resultSet.next()) {
+				info=parseSupplier(resultSet);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("supplierservice:find出错。\nsql语句为：\n"+sql);
+		}
+		return info;
+	}
+	
 	private static SupplierInfo parseSupplier(ResultSet resultSet) throws SQLException {
 		String id = resultSet.getString("id");
 		String name = resultSet.getString("name");
