@@ -337,6 +337,14 @@ public class EntryWindow {
 		
 		
 		Button button = new Button(shell, SWT.NONE);
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				shell.close();
+				MainMenu main = new MainMenu();
+				main.open();
+			}
+		});
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
