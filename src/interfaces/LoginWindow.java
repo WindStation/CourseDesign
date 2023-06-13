@@ -57,7 +57,7 @@ public class LoginWindow {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(1321, 794);
+		shell.setSize(1366, 768);
 		shell.setText("商品库存管理系统");
 
 		loginId_text = new Text(shell, SWT.BORDER);
@@ -156,7 +156,7 @@ public class LoginWindow {
 
 		Label label_2 = new Label(shell, SWT.NONE);
 		label_2.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 30, SWT.NORMAL));
-		label_2.setBounds(401, 124, 485, 71);
+		label_2.setBounds(401, 124, 568, 71);
 		label_2.setText("商品库存管理系统 - 欢迎");
 
 	}

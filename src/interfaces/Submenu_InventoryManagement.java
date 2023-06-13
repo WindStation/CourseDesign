@@ -6,6 +6,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class Submenu_InventoryManagement {
 
@@ -44,7 +46,7 @@ public class Submenu_InventoryManagement {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(866, 552);
+		shell.setSize(933, 641);
 		shell.setText("SWT Application");
 		
 		Button inventory_view = new Button(shell, SWT.NONE);
@@ -55,7 +57,7 @@ public class Submenu_InventoryManagement {
 				inventory_view.open();
 			}
 		});
-		inventory_view.setBounds(103, 376, 180, 45);
+		inventory_view.setBounds(335, 165, 180, 45);
 		inventory_view.setText("库存盘点");
 		
 		Button inventory_ship = new Button(shell, SWT.NONE);
@@ -67,8 +69,12 @@ public class Submenu_InventoryManagement {
 			}
 		});
 		inventory_ship.setText("库存调拨");
-		inventory_ship.setBounds(513, 376, 180, 45);
+		inventory_ship.setBounds(335, 340, 180, 45);
+		
+		Label lblNewLabel = new Label(shell, SWT.NONE);
+		lblNewLabel.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 15, SWT.NORMAL));
+		lblNewLabel.setBounds(366, 10, 137, 57);
+		lblNewLabel.setText("库存管理");
 
 	}
-
 }

@@ -15,8 +15,8 @@ public class GoodsService {
 		// ....
 		String sql = "insert into `goodsinfo` values('" + goods.getId() + "','" + goods.getName() + "','"
 				+ goods.getAmount() + "','" + goods.getCategory() + "','" + goods.getWarehouse() + "','"
-				+ String.valueOf(goods.getPrice()) + "','" + goods.getUnit() + "','" + goods.getProducer() + "','"
-				+ goods.getNote() + "')";
+				+ String.valueOf(goods.getPrice()) + "','" + goods.getProducer() + "','" + goods.getNote() + "','"
+				+ goods.getUnit() + "')";
 
 		DBOperation.update(sql);
 	}
@@ -85,49 +85,49 @@ public class GoodsService {
 		String newProducer = goods.getProducer();
 		String newNote = goods.getNote();
 
-		String basesql = "update `warehouseinfo` set ";
+		String basesql = "update `goodsinfo` set ";
 		if (newName == null && newAmount == 0 && newCategory == null && newWarehouse == null && newPrice == 0
 				&& newUnit == null && newProducer == null && newNote == null) {
 			return false;
 		}
 		boolean flag = false;
-		if (newName != null) {
+		if (newName != null && !newName.trim().equals("")) {
 			String sql = basesql + "`name` = '" + newName + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = result > 0;
 		}
-		if (newAmount != 0) {
-			String sql = basesql + "`amount` = '" + newAmount + "' where id = '" + targetId + "'";
+		if (newAmount != -1) {
+			String sql = basesql + "`amount` = " + newAmount + " where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}
-		if (newCategory != null) {
+		if (newCategory != null && !newCategory.trim().equals("")) {
 			String sql = basesql + "`category` = '" + newCategory + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}
-		if (newWarehouse != null) {
+		if (newWarehouse != null && !newWarehouse.trim().equals("")) {
 			String sql = basesql + "`warehouse_id` = '" + newWarehouse + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}
-		if (newPrice != 0) {
-			String sql = basesql + "`price` = '" + newPrice + "' where id = '" + targetId + "'";
+		if (newPrice != -1) {
+			String sql = basesql + "`price` = " + newPrice + " where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}
-		if (newUnit != null) {
+		if (newUnit != null && !newUnit.trim().equals("")) {
 			String sql = basesql + "`unit` = '" + newUnit + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}
-		if (newProducer != null) {
+		if (newProducer != null && !newProducer.trim().equals("")) {
 			String sql = basesql + "`producer` = '" + newProducer + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}
-		if (newNote != null) {
-			String sql = basesql + "`note` = '" + newNote + "' where id = '" + targetId + "'";
+		if (newNote != null && !newNote.trim().equals("")) {
+			String sql = basesql + "`notes` = '" + newNote + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}

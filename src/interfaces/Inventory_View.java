@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class Inventory_View {
 
@@ -54,7 +55,8 @@ public class Inventory_View {
 		shell.setText("SWT Application");
 		
 		Label label = new Label(shell, SWT.NONE);
-		label.setBounds(404, 10, 105, 28);
+		label.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 15, SWT.NORMAL));
+		label.setBounds(404, 10, 120, 47);
 		label.setText("库存盘点");
 		
 		Label label_1 = new Label(shell, SWT.NONE);
@@ -66,7 +68,7 @@ public class Inventory_View {
 		lblNewLabel.setText("至");
 		
 		table = new Table(shell, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setBounds(21, 168, 884, 414);
+		table.setBounds(22, 210, 884, 414);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		

@@ -1,5 +1,7 @@
 package interfaces;
 
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -132,8 +134,27 @@ public class Daily_Goods {
 			public void widgetSelected(SelectionEvent e) {
 				String id=idText.getText();
 				
-				Goods goods=GoodsService.find(id);
+				if(id==null || id.trim().equals("")) {
+					// 查找全部
+					List<Goods> goodlist = GoodsService.findAll();
+					table.removeAll();
+					goodlist.forEach(goods->{
+						TableItem item=new TableItem(table,SWT.NONE);
+						item.setText(0, goods.getId());
+			            item.setText(1, goods.getName());
+			            item.setText(2, String.valueOf(goods.getAmount()));
+			            item.setText(3, goods.getCategory());
+			            item.setText(4, goods.getWarehouse());
+			            item.setText(5, String.valueOf(goods.getPrice()));
+			            item.setText(6, goods.getUnit());
+			            item.setText(7, goods.getProducer());
+			            item.setText(8,goods.getNote()==null?"":goods.getNote());
+					});
+					return;
+				}
 				
+				Goods goods=GoodsService.find(id);
+				table.removeAll();
 				if(goods!=null) {
 					TableItem item=new TableItem(table,SWT.NONE);
 					item.setText(0, goods.getId());
@@ -185,10 +206,18 @@ public class Daily_Goods {
 		        
 		    	String id = idText.getText();
 		        String name = nameText.getText();
-		        int amount = Integer.parseInt(amountText.getText());
+		        int amount =-1;
+		        if(!amountText.getText().trim().equals("")) {
+		        	amount=Integer.parseInt(amountText.getText());
+		        }
+		        
 				String category=categoryText.getText();
 				String warehouse=warehouseText.getText();
-				float price=Float.parseFloat(priceText.getText());
+				
+				float price=-1;
+				if(!priceText.getText().trim().equals("")) {
+					price = Float.parseFloat(priceText.getText());
+				}
 				String unit=unitText.getText();
 				String producer=producerText.getText();
 				String note=noteText.getText();
