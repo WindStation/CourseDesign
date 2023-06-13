@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import control.Index;
@@ -163,79 +164,84 @@ public class DeliverWindow {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
-				// 获取选项框中的数据
-		        String selectedGoodsId = goodsId_1.getText();
-		        String selectedGoodsName = goodsname.getText();
-		        String selectedGoodsCategory = goodsClass.getText();
-		        String selectedGoodsUnit = unit.getText();
-		        String selectedGoodsAmount = GoodsAmount.getText();
-		        int goodsAmount = Integer.parseInt(selectedGoodsAmount);
-		        String selectedGoodsPrice = GoodsPrice.getText();
-		        float goodsPrice = Float.parseFloat(selectedGoodsPrice);
-		       
-		        String selectedWarehouse = warehouseCom.getText();
-		       
-		        String selectedNote = note_1.getText();
+				try {
+					// 获取选项框中的数据
+					String selectedGoodsId = goodsId_1.getText();
+					String selectedGoodsAmount = GoodsAmount.getText();
+					int goodsAmount = Integer.parseInt(selectedGoodsAmount);
+					String selectedGoodsPrice = GoodsPrice.getText();
+					float goodsPrice = Float.parseFloat(selectedGoodsPrice);
+      
+					String selectedWarehouse = warehouseCom.getText();
+      
+					String selectedNote = note_1.getText();
+     
+      
+					String selectedQcId = QcId.getText();
+					String[] qcparts = selectedQcId.split("\\."); // 使用点号作为分隔符拆分字符串
+					String qcselectedId = qcparts[0]; // 获取拆分后的第一部分，即 ID
+					
+					String customernow = customer.getText();
+					String[] csutomere = customernow.split("\\."); // 使用点号作为分隔符拆分字符串
+					String customerId = csutomere[0]; // 获取拆分后的第一部分，即 ID
+					
+					
+					String shippers = shipper.getText();
+					String[] shipperId = shippers.split("\\."); // 使用点号作为分隔符拆分字符串
+					String shipperid = shipperId[0]; // 获取拆分后的第一部分，即 ID
+					
+					int year = dateTime.getYear();
+					int month = dateTime.getMonth() + 1; // Month index starts from 0, so increment by 1
+					int day = dateTime.getDay();
+					int hour = dateTime.getHours();
+					int minute = dateTime.getMinutes();
+
+					LocalDateTime localDateTime = LocalDateTime.of(year, month, day, hour, minute);
+					// 入库操作
+					Deliver deliver = new Deliver( localDateTime,selectedGoodsId,goodsPrice,goodsAmount,qcselectedId,Index.currentOperator.getId(),
+							customerId,shipperid,selectedNote);
+					DeliverService.insert(deliver);
+					
+					// 清空文本框
+					goodsId_1.setText("");
+					goodsname.setText("");
+					goodsClass.setText("");
+					unit.setText("");
+					GoodsAmount.setText("");
+					GoodsPrice.setText("");
+     
+					warehouseCom.setText("");
+					
+					note_1.setText("");
+					
+					QcId.setText("");
+					
+					MessageBox box = new MessageBox(shell, SWT.NONE);
+					box.setText("提示");
+					box.setMessage("商品出库成功");
+					box.open();
+				} catch (NumberFormatException e1) {
+					goodsId_1.setText("");
+					goodsname.setText("");
+					goodsClass.setText("");
+					unit.setText("");
+					GoodsAmount.setText("");
+					GoodsPrice.setText("");
+					warehouseCom.setText("");
+					note_1.setText("");
+					QcId.setText("");
+					MessageBox box = new MessageBox(shell, SWT.NONE);
+					box.setText("提示");
+					box.setMessage("商品出库失败");
+					box.open();
+				}
 		      
 		       
-		        String selectedQcId = QcId.getText();
-		        String[] qcparts = selectedQcId.split("\\."); // 使用点号作为分隔符拆分字符串
-		        String qcselectedId = qcparts[0]; // 获取拆分后的第一部分，即 ID
-		        
-		        String customernow = customer.getText();
-		        String[] csutomere = customernow.split("\\."); // 使用点号作为分隔符拆分字符串
-		        String customerId = qcparts[0]; // 获取拆分后的第一部分，即 ID
-		        
-		        String shippers = shipper.getText();
-		        String[] shipperId = shippers.split("\\."); // 使用点号作为分隔符拆分字符串
-		        String shipperid = qcparts[0]; // 获取拆分后的第一部分，即 ID
-		        
-		        int year = dateTime.getYear();
-		        int month = dateTime.getMonth() + 1; // Month index starts from 0, so increment by 1
-		        int day = dateTime.getDay();
-		        int hour = dateTime.getHours();
-		        int minute = dateTime.getMinutes();
-
-		        LocalDateTime localDateTime = LocalDateTime.of(year, month, day, hour, minute);
-		        // 创建相应的类对象
-		        
-		        WarehouseInfo selectedWarehouseInfo = WarehouseService.find(selectedWarehouse);
-		        //selectedWarehouseInfo.set
-		        
-
-		        // 构建其他类对象，根据需要自行添加
-
-		        // 执行相应的操作，例如存储到数据库
-		        // 注意：以下代码只是示例，你需要根据具体情况自行修改
-		        // 添加商品
-		        
-		        // 入库操作
-		        Deliver deliver = new Deliver( localDateTime,selectedGoodsId,goodsPrice,goodsAmount,qcselectedId,Index.currentOperator.getId(),
-		        		customerId,shipperid,selectedNote);
-		        DeliverService.insert(deliver);
-
-		        // 清空文本框
-		        goodsId_1.setText("");
-		        goodsname.setText("");
-		        goodsClass.setText("");
-		        unit.setText("");
-		        GoodsAmount.setText("");
-		        GoodsPrice.setText("");
-		      
-		        warehouseCom.setText("");
-		        
-		        note_1.setText("");
-		        
-		        QcId.setText("");
-		        // 其他文本框清空，根据需要自行添加
-
-		        // 提示添加成功或进行其他操作
-		        System.out.println("商品添加成功");
 				
 			}
 		});
 		add.setText("确认出库");
-		add.setBounds(395, 400, 114, 34);
+		add.setBounds(527, 400, 114, 34);
 		
 		GoodsAmount = new Text(shell, SWT.BORDER);
 		GoodsAmount.setBounds(763, 180, 160, 30);
@@ -275,10 +281,6 @@ public class DeliverWindow {
 		operator_id.setBounds(143, 109, 150, 30);
 		operator_id.setText(Index.currentOperator.getId());
 		
-		Button button = new Button(shell, SWT.NONE);
-		button.setText("返回");
-		button.setBounds(757, 400, 114, 34);
-		
 		//商品类别：
 		goodsClass = new Text(shell, SWT.BORDER);
 		goodsClass.setEditable(false);
@@ -295,7 +297,7 @@ public class DeliverWindow {
 		            Goods selectedGood = GoodsService.find(selectedClass);
 		            
 		            // 更新商品名称文本框的值
-		            goodsClass.setText(selectedGood.getName());
+		            goodsClass.setText(selectedGood.getCategory());
 		        }
 		    }
 		});
@@ -316,7 +318,7 @@ public class DeliverWindow {
 		            Goods selectedGood = GoodsService.find(selectedClass);
 		            
 		            // 更新商品名称文本框的值
-		            unit.setText(selectedGood.getName());
+		            unit.setText(selectedGood.getUnit());
 		        }
 		    }
 		});

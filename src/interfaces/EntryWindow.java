@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.SWT;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -180,72 +181,99 @@ public class EntryWindow {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// 获取选项框中的数据
-		        String selectedGoodsId = goodsId_1.getText();
-		        String selectedGoodsName = goodName.getText();
-		        String selectedGoodsCategory = goodsClass.getText();
-		        String selectedGoodsUnit = unit.getText();
-		        String selectedGoodsAmount = GoodsAmount.getText();
-		        int goodsAmount = Integer.parseInt(selectedGoodsAmount);
-		        String selectedGoodsPrice = GoodsPrice.getText();
-		        float goodsPrice = Float.parseFloat(selectedGoodsPrice);
-		        String selectedSupplier = Supplier.getText();
-		        String selectedWarehouse = warehouseCom.getText();
-		        String selectedProducer = Producer.getText();
-		        String selectedNote = Note.getText();
-		        String selectedBuyerId = BuyerId.getText();
-		        String[] parts = selectedBuyerId.split("\\."); // 使用点号作为分隔符拆分字符串
-		        String selectedId = parts[0]; // 获取拆分后的第一部分，即 ID
-		        String selectedQcId = QcId.getText();
-		        String[] qcparts = selectedQcId.split("\\."); // 使用点号作为分隔符拆分字符串
-		        String qcselectedId = qcparts[0]; // 获取拆分后的第一部分，即 ID
-		        String selectedOperatorId = employer.getText();
-		        int year = dateTime.getYear();
-		        int month = dateTime.getMonth() + 1; // Month index starts from 0, so increment by 1
-		        int day = dateTime.getDay();
-		        int hour = dateTime.getHours();
-		        int minute = dateTime.getMinutes();
+				
+		        try {
+					String selectedGoodsId = goodsId_1.getText();
+					String selectedGoodsName = goodName.getText();
+					String selectedGoodsCategory = goodsClass.getText();
+					String selectedGoodsUnit = unit.getText();
+					String selectedGoodsAmount = GoodsAmount.getText();
+					int goodsAmount = Integer.parseInt(selectedGoodsAmount);
+					String selectedGoodsPrice = GoodsPrice.getText();
+					float goodsPrice = Float.parseFloat(selectedGoodsPrice);
+					String selectedSupplier = Supplier.getText();
+					String selectedWarehouse = warehouseCom.getText();
+					String selectedProducer = Producer.getText();
+					String selectedNote = Note.getText();
+					String selectedBuyerId = BuyerId.getText();
+					String[] parts = selectedBuyerId.split("\\."); // 使用点号作为分隔符拆分字符串
+					String selectedId = parts[0]; // 获取拆分后的第一部分，即 ID
+					String selectedQcId = QcId.getText();
+					String[] qcparts = selectedQcId.split("\\."); // 使用点号作为分隔符拆分字符串
+					String qcselectedId = qcparts[0]; // 获取拆分后的第一部分，即 ID
+					String selectedOperatorId = employer.getText();
+					int year = dateTime.getYear();
+					int month = dateTime.getMonth() + 1; // Month index starts from 0, so increment by 1
+					int day = dateTime.getDay();
+					int hour = dateTime.getHours();
+					int minute = dateTime.getMinutes();
 
-		        LocalDateTime localDateTime = LocalDateTime.of(year, month, day, hour, minute);
-		        // 创建相应的类对象
+					LocalDateTime localDateTime = LocalDateTime.of(year, month, day, hour, minute);
+					// 创建相应的类对象
+					
+					WarehouseInfo selectedWarehouseInfo = WarehouseService.find(selectedWarehouse);
+					//selectedWarehouseInfo.set
+					
+
+					// 构建其他类对象，根据需要自行添加
+
+					// 执行相应的操作，例如存储到数据库
+					// 注意：以下代码只是示例，你需要根据具体情况自行修改
+					// 添加商品
+					
+					// 入库操作
+					Entry entry = new Entry(localDateTime,selectedGoodsId,goodsPrice,goodsAmount,qcselectedId,Index.currentOperator.getId(),
+							selectedSupplier,selectedId,selectedNote);
+					EntryService.insert(entry);
+					MessageBox box = new MessageBox(shell, SWT.NONE);
+					box.setText("提示");
+					box.setMessage("商品入库成功！");
+					box.open();
+					
+
+					// 清空文本框
+					goodsId_1.setText("");
+					goodName.setText("");
+					goodsClass.setText("");
+					unit.setText("");
+					GoodsAmount.setText("");
+					GoodsPrice.setText("");
+					Supplier.setText("");
+					warehouseCom.setText("");
+					Producer.setText("");
+					Note.setText("");
+					BuyerId.setText("");
+					QcId.setText("");
+					// 其他文本框清空，根据需要自行添加
+
+					
+					
+				} catch (NumberFormatException e1) {
+					// TODO 自动生成的 catch 块
+					MessageBox box = new MessageBox(shell, SWT.NONE);
+					box.setText("提示");
+					box.setMessage("商品入库失败");
+					box.open();
+					goodsId_1.setText("");
+					goodName.setText("");
+					goodsClass.setText("");
+					unit.setText("");
+					GoodsAmount.setText("");
+					GoodsPrice.setText("");
+					Supplier.setText("");
+					warehouseCom.setText("");
+					Producer.setText("");
+					Note.setText("");
+					BuyerId.setText("");
+					QcId.setText("");
+				}
 		        
-		        WarehouseInfo selectedWarehouseInfo = WarehouseService.find(selectedWarehouse);
-		        //selectedWarehouseInfo.set
-		        
-
-		        // 构建其他类对象，根据需要自行添加
-
-		        // 执行相应的操作，例如存储到数据库
-		        // 注意：以下代码只是示例，你需要根据具体情况自行修改
-		        // 添加商品
-		        
-		        // 入库操作
-		        Entry entry = new Entry(localDateTime,selectedGoodsId,goodsPrice,goodsAmount,qcselectedId,Index.currentOperator.getId(),
-		        		selectedSupplier,selectedId,selectedNote);
-		        EntryService.insert(entry);
-
-		        // 清空文本框
-		        goodsId_1.setText("");
-		        goodName.setText("");
-		        goodsClass.setText("");
-		        unit.setText("");
-		        GoodsAmount.setText("");
-		        GoodsPrice.setText("");
-		        Supplier.setText("");
-		        warehouseCom.setText("");
-		        Producer.setText("");
-		        Note.setText("");
-		        BuyerId.setText("");
-		        QcId.setText("");
-		        // 其他文本框清空，根据需要自行添加
-
-		        // 提示添加成功或进行其他操作
-		        System.out.println("商品添加成功");
 				
 				
 				
 			}
 		});
-		add.setBounds(410, 377, 114, 34);
+		add.setBounds(554, 379, 114, 34);
 		add.setText("添加商品");
 		
 		
@@ -269,8 +297,6 @@ public class EntryWindow {
 		for (WarehouseInfo warehouse : warehouses) {
 		    warehouseCom.add(warehouse.getName());
 		}
-		// 设置默认选项
-		warehouseCom.select(0); // 设置第一个选项为默认选项
 		
 		Producer = new Text(shell, SWT.BORDER);
 		Producer.setBounds(779, 236, 149, 30);
@@ -332,32 +358,6 @@ public class EntryWindow {
 		        }
 		    }
 		});
-
-		
-		
-		
-		Button button = new Button(shell, SWT.NONE);
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				shell.close();
-				MainMenu main = new MainMenu();
-				main.open();
-			}
-		});
-		button.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				//根据返回需要回到的页面 进行新建
-				//例如：
-				LoginWindow loginWindow = new LoginWindow();
-				shell.close();
-				loginWindow.open();
-				
-			}
-		});
-		button.setBounds(772, 377, 114, 34);
-		button.setText("返回");
 		
 		//商品名称监听
 		goodsClass = new Text(shell, SWT.BORDER);
