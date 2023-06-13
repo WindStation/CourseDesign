@@ -5,6 +5,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.SWT;
 import org.eclipse.wb.swt.SWTResourceManager;
+
+import control.Index;
+
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -159,6 +162,27 @@ public class MainMenu {
 		label_2_2.setText("进出货");
 		label_2_2.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 15, SWT.NORMAL));
 		label_2_2.setBounds(445, 154, 80, 27);
+		
+		Label operatorOnly_notice = new Label(shell, SWT.NONE);
+		operatorOnly_notice.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 12, SWT.NORMAL));
+		operatorOnly_notice.setBounds(788, 158, 146, 27);
+		operatorOnly_notice.setText("");
+		
+		Label adminOnly_notice = new Label(shell, SWT.NONE);
+		adminOnly_notice.setText("");
+		adminOnly_notice.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 12, SWT.NORMAL));
+		adminOnly_notice.setBounds(788, 582, 146, 27);
+		
+		if (Index.currentManager==null) {
+			adminOnly_notice.setText("仅管理员可使用");
+			goodmana_btn.setEnabled(false);
+			warehousemana_btn.setEnabled(false);
+			accountmana_btn.setEnabled(false);
+		} else {
+			operatorOnly_notice.setText("仅操作员可使用");
+			entry_btn.setEnabled(false);
+			deliver_btn.setEnabled(false);
+		}
 
 	}
 }
