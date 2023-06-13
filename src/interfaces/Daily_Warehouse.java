@@ -4,6 +4,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
+
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
 
@@ -126,15 +129,30 @@ public class Daily_Warehouse {
 			public void widgetSelected(SelectionEvent e) {
 				String id=IdText.getText();
 				
-				WarehouseInfo warehouse=WarehouseService.find(id);
+				if(id==null || id.trim().equals("")) {
+					// 查找全部
+					List<WarehouseInfo> infos = WarehouseService.findAllWarehouses();
+					table.removeAll();
+					infos.forEach(warehouse->{
+						TableItem item=new TableItem(table,SWT.NONE);
+						item.setText(0, warehouse.getId());
+			            item.setText(1, warehouse.getName());
+			            item.setText(2, String.valueOf(warehouse.getCapacity()));
+			            item.setText(3,warehouse.getDirectorTel());
+			            item.setText(4,warehouse.getNote()==null?"":warehouse.getNote());
+					});
+					return;
+				}
 				
+				WarehouseInfo warehouse=WarehouseService.find(id);
+				table.removeAll();
 				if(warehouse!=null) {
 					TableItem item=new TableItem(table,SWT.NONE);
 					item.setText(0, warehouse.getId());
 		            item.setText(1, warehouse.getName());
 		            item.setText(2, String.valueOf(warehouse.getCapacity()));
 		            item.setText(3,warehouse.getDirectorTel());
-		            item.setText(4,warehouse.getNote());
+		            item.setText(4,warehouse.getNote()==null?"":warehouse.getNote());
 				}else {
 					// 查询结果为空的处理逻辑
 				    MessageBox messageBox = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
@@ -184,7 +202,11 @@ public class Daily_Warehouse {
 			public void widgetSelected(SelectionEvent e) {
 				String id = IdText.getText();
 		        String name = nameText.getText();
-		        int capacity = Integer.valueOf(capText.getText());
+		        int capacity = -1;
+		        if(!capText.getText().trim().equals("")) {
+		        	capacity = Integer.valueOf(capText.getText());
+		        }
+		        		
 		        String tel = telText.getText();
 		        String note = noteText.getText();
 		        WarehouseInfo warehouse=new WarehouseInfo(id,name,capacity,tel,note);

@@ -32,7 +32,7 @@ public class WarehouseService {
 				String id = resultSet.getString("id");
 				String name = resultSet.getString("name");
 				int capacity = resultSet.getInt("capacity");
-				String tel = resultSet.getString("directorTel");
+				String tel = resultSet.getString("director_Tel");
 				String note = resultSet.getString("note");
 				warehouse = new WarehouseInfo(id, name,capacity,tel,note);
 			}
@@ -75,26 +75,26 @@ public class WarehouseService {
 		String newNote=warehouse.getNote();
 
 		String basesql = "update `warehouseinfo` set ";
-		if (newName == null && newCap == 0 && newTel==null && newNote==null) {
+		if (newName == null && newCap == -1 && newTel==null && newNote==null) {
 			return false;
 		}
 		boolean flag = false;
-		if (newName != null) {
+		if (newName != null && !newName.trim().equals("")) {
 			String sql = basesql + "`name` = '" + newName + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = result > 0;
 		}
-		if (newCap != 0) {
+		if (newCap != -1) {
 			String sql = basesql + "`capacity` = '" + newCap + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}
-		if (newTel != null) {
+		if (newTel != null && !newTel.trim().equals("")) {
 			String sql = basesql + "`director_Tel` = '" + newTel + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
 		}
-		if (newNote != null) {
+		if (newNote != null && !newNote.trim().equals("")) {
 			String sql = basesql + "`note` = '" + newNote + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;
