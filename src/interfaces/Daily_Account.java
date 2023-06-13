@@ -3,6 +3,9 @@ package interfaces;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
+
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -72,7 +75,21 @@ public class Daily_Account {
 			public void widgetSelected(SelectionEvent e) {
 				String id=idText.getText();
 				
+				if(id==null || id.trim().equals("")) {
+					// 查找全部
+					List<Operator> operators = OperatorService.findAll();
+					table.removeAll();
+					operators.forEach(operator->{
+						TableItem item=new TableItem(table,SWT.NONE);
+						item.setText(0, operator.getId());
+			            item.setText(1, operator.getName());
+			            item.setText(2, operator.getPassword());
+					});
+					return;
+				}
+				
 				Operator operator=OperatorService.find(id);
+				table.removeAll();
 				
 				if(operator!=null) {
 					TableItem item=new TableItem(table,SWT.NONE);

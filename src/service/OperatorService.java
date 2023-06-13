@@ -2,6 +2,8 @@ package service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import configuration.DBOperation;
 import model.Operator;
@@ -39,6 +41,25 @@ public class OperatorService {
 		}
 		return operator;
 	}
+	
+	public static List<Operator> findAll() {
+		String sql = "select * from `operatorinfo`";
+		ResultSet resultSet = DBOperation.query(sql);
+		List<Operator> operators = new ArrayList<>();
+		try {
+			while(resultSet.next()) {
+				String id = resultSet.getString("id");
+				String name = resultSet.getString("name");
+				String password = resultSet.getString("password");
+				operators.add(new Operator(id, name, password));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("操作员查找all：错误");
+		}
+		return operators;
+	}
 
 	public static boolean update(Operator operator) {
 		// 传入参数的id代表要更改的管理员，剩余字段如果不为null则代表进行更改
@@ -51,12 +72,12 @@ public class OperatorService {
 			return false;
 		}
 		boolean flag = false;
-		if (newName != null) {
+		if (newName != null && !newName.trim().equals("")) {
 			String sql = basesql + "`name` = '" + newName + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = result > 0;
 		}
-		if (newPW != null) {
+		if (newPW != null && !newPW.trim().equals("")) {
 			String sql = basesql + "`password` = '" + newPW + "' where id = '" + targetId + "'";
 			int result = DBOperation.update(sql);
 			flag = (flag == false) ? (result > 0) : true;

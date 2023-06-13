@@ -44,20 +44,7 @@ public class DBOperation {
 
 	// 构造时建立连接 TODO 最后把这个恢复
 //	public DBOperation()
-//	public static void init() {
-//		try {
-//			Class.forName(DRIVERNAME);
-//			connection = DriverManager.getConnection(CONNECTION_URL, DBUSER_ID, DBPASSWORD);
-//			statement = connection.createStatement();
-//			statement.executeUpdate("use goodsinventory");
-//		} catch (ClassNotFoundException | SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-
-	// TODO 这个是测试的时候用的，最后去掉，改用init()
-	static {
+	public static void init() {
 		try {
 			Class.forName(DRIVERNAME);
 			connection = DriverManager.getConnection(CONNECTION_URL, DBUSER_ID, DBPASSWORD);
@@ -68,6 +55,19 @@ public class DBOperation {
 			e.printStackTrace();
 		}
 	}
+
+	// TODO 这个是测试的时候用的，最后去掉，改用init()
+//	static {
+//		try {
+//			Class.forName(DRIVERNAME);
+//			connection = DriverManager.getConnection(CONNECTION_URL, DBUSER_ID, DBPASSWORD);
+//			statement = connection.createStatement();
+//			statement.executeUpdate("use goodsinventory");
+//		} catch (ClassNotFoundException | SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
 	public static void main(String[] args) {
 		// TEST

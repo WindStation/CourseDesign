@@ -1,5 +1,6 @@
 package control;
 
+import configuration.DBOperation;
 import interfaces.LoginWindow;
 import model.Manager;
 import model.Operator;
@@ -11,7 +12,7 @@ public class Index {
 
 	public static void main(String[] args) {
 		// TODO 最后改回来
-//		DBOperation.init();
+		DBOperation.init();
 		LoginWindow loginWindow = new LoginWindow();
 		loginWindow.open();
 	}
