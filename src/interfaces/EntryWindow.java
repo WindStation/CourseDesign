@@ -214,6 +214,9 @@ public class EntryWindow {
 					WarehouseInfo selectedWarehouseInfo = WarehouseService.find(selectedWarehouse);
 					//selectedWarehouseInfo.set
 					
+					Goods goods = GoodsService.find(selectedGoodsId);
+					goods.setAmount(goods.getAmount()+goodsAmount);
+					GoodsService.update(goods);
 
 					// 构建其他类对象，根据需要自行添加
 

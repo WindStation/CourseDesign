@@ -195,6 +195,19 @@ public class DeliverWindow {
 					int day = dateTime.getDay();
 					int hour = dateTime.getHours();
 					int minute = dateTime.getMinutes();
+					
+					Goods goods = GoodsService.find(selectedGoodsId);
+					if(goods.getAmount()-goodsAmount<0) {
+						MessageBox box = new MessageBox(shell);
+						box.setText("提示");
+						box.setMessage("出库数量多于剩余数量，请重新输入！");
+						box.open();
+						GoodsAmount.setText("");
+						return;
+						
+					}
+					goods.setAmount(goods.getAmount()-goodsAmount);
+					GoodsService.update(goods);
 
 					LocalDateTime localDateTime = LocalDateTime.of(year, month, day, hour, minute);
 					// 入库操作
