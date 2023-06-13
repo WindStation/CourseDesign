@@ -101,11 +101,11 @@ public class Daily_Account {
 		
 		TableColumn tblclmnNewColumn_1 = new TableColumn(table, SWT.NONE);
 		tblclmnNewColumn_1.setWidth(209);
-		tblclmnNewColumn_1.setText("Password");
+		tblclmnNewColumn_1.setText("Name");
 		
 		TableColumn tblclmnNewColumn_2 = new TableColumn(table, SWT.NONE);
 		tblclmnNewColumn_2.setWidth(249);
-		tblclmnNewColumn_2.setText("Name");
+		tblclmnNewColumn_2.setText("Password");
 		
 		Label lblId_1 = new Label(shell, SWT.NONE);
 		lblId_1.setBounds(20, 56, 76, 20);

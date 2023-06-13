@@ -24,9 +24,12 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import model.CustomerInfo;
 import model.Deliver;
 import model.Goods;
+import service.CheckerService;
 import service.CustomerService;
 import service.DeliverService;
 import service.GoodsService;
+import service.OperatorService;
+import service.ShipperService;
 
 public class Statistics_DeliverInfo {
 
@@ -240,8 +243,9 @@ public class Statistics_DeliverInfo {
 					TableItem item = new TableItem(table, SWT.NONE);
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					item.setText(new String[] { String.valueOf(d.getId()), d.getOutDate().format(formatter),
-							d.getGoodId(), String.valueOf(d.getAmount()), String.valueOf(d.getPrice()), null,
-							d.getOperatorId(), null, null, d.getNote() });
+							d.getGoodId(), String.valueOf(d.getAmount()), String.valueOf(d.getPrice()), CheckerService.find(d.getCheckerId()),
+							OperatorService.find(d.getOperatorId()).getName(), CustomerService.find(d.getCustomerId()).getName(),
+							ShipperService.find(d.getShipperId()), d.getNote() });
 				});
 				
 			}
@@ -260,8 +264,9 @@ public class Statistics_DeliverInfo {
 					TableItem item = new TableItem(table, SWT.NONE);
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					item.setText(new String[] { String.valueOf(d.getId()), d.getOutDate().format(formatter),
-							d.getGoodId(), String.valueOf(d.getAmount()), String.valueOf(d.getPrice()), null,
-							d.getOperatorId(), null, null, d.getNote() });
+							d.getGoodId(), String.valueOf(d.getAmount()), String.valueOf(d.getPrice()), CheckerService.find(d.getCheckerId()),
+							OperatorService.find(d.getOperatorId()).getName(), CustomerService.find(d.getCustomerId()).getName(),
+							ShipperService.find(d.getShipperId()), d.getNote() });
 				});
 			}
 		});

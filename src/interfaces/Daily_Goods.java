@@ -64,23 +64,23 @@ public class Daily_Goods {
 		lblNewLabel.setText("商品信息管理");
 		
 		Label label = new Label(shell, SWT.NONE);
-		label.setBounds(10, 51, 76, 20);
+		label.setBounds(10, 51, 43, 20);
 		label.setText("编号");
 		
 		Label lblNewLabel_1 = new Label(shell, SWT.NONE);
-		lblNewLabel_1.setBounds(10, 93, 76, 20);
+		lblNewLabel_1.setBounds(10, 93, 43, 20);
 		lblNewLabel_1.setText("名称");
 		
 		Label lblNewLabel_2 = new Label(shell, SWT.NONE);
-		lblNewLabel_2.setBounds(10, 136, 76, 20);
+		lblNewLabel_2.setBounds(10, 136, 43, 20);
 		lblNewLabel_2.setText("数量");
 		
 		Label lblNewLabel_3 = new Label(shell, SWT.NONE);
-		lblNewLabel_3.setBounds(10, 181, 76, 20);
+		lblNewLabel_3.setBounds(10, 181, 43, 20);
 		lblNewLabel_3.setText("种类");
 		
 		Label lblNewLabel_4 = new Label(shell, SWT.NONE);
-		lblNewLabel_4.setBounds(10, 227, 76, 20);
+		lblNewLabel_4.setBounds(10, 227, 37, 20);
 		lblNewLabel_4.setText("仓库");
 		
 		idText = new Text(shell, SWT.BORDER);
@@ -99,19 +99,19 @@ public class Daily_Goods {
 		warehouseText.setBounds(68, 227, 183, 26);
 		
 		Label label_1 = new Label(shell, SWT.NONE);
-		label_1.setBounds(303, 51, 76, 20);
+		label_1.setBounds(303, 51, 43, 20);
 		label_1.setText("单价");
 		
 		Label label_2 = new Label(shell, SWT.NONE);
-		label_2.setBounds(303, 93, 76, 20);
+		label_2.setBounds(303, 93, 43, 20);
 		label_2.setText("单位");
 		
 		Label label_3 = new Label(shell, SWT.NONE);
-		label_3.setBounds(303, 136, 76, 20);
+		label_3.setBounds(303, 136, 43, 20);
 		label_3.setText("生产商");
 		
 		Label label_4 = new Label(shell, SWT.NONE);
-		label_4.setBounds(303, 181, 76, 20);
+		label_4.setBounds(303, 181, 43, 20);
 		label_4.setText("备注");
 		
 		priceText = new Text(shell, SWT.BORDER);

@@ -94,6 +94,18 @@ public class Deliver {
 		this.note = note;
 	}
 
+	public Deliver(LocalDateTime outDate, String goodId, float price, int amount, String checkerId,
+			String operatorId, String customerId, String shipperId, String note) {
+		this.outDate = outDate;
+		this.goodId = goodId;
+		this.price = price;
+		this.amount = amount;
+		this.checkerId = checkerId;
+		this.operatorId = operatorId;
+		this.customerId = customerId;
+		this.shipperId = shipperId;
+		this.note = note;
+	}
 	public Deliver(int id, LocalDateTime outDate, String goodId, float price, int amount, String checkerId,
 			String operatorId, String customerId, String shipperId, String note) {
 		this.id = id;

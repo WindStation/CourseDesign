@@ -83,5 +83,14 @@ public class DeliverService {
 		return new Deliver(id, localDateTime, goodId, price, amount, checkerId, operatorId, customerId, shipperId,
 				note);
 	}
+	public static void insert(Deliver deliver) {
+	    String sql = "INSERT INTO `Deliver` (outDate, good_id, price, amount, checker_id, operator_id, customer_id, shipper_id, note) VALUES ('"
+	            + deliver.getOutDate() + "', '" + deliver.getGoodId() + "', " + deliver.getPrice() + ", " + deliver.getAmount()
+	            + ", '" + deliver.getCheckerId() + "', '" + deliver.getOperatorId() + "', '" + deliver.getCustomerId()
+	            + "', '" + deliver.getShipperId() + "', '" + deliver.getNote() + "')";
+
+	    DBOperation.update(sql);
+	}
+
 
 }

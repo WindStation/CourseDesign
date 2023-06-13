@@ -15,6 +15,7 @@ import control.Index;
 import model.CheckerInfo;
 import model.Goods;
 import model.PurchaserInfo;
+import model.ShipperInfo;
 import model.SupplierInfo;
 import model.WarehouseInfo;
 import model.Entry;
@@ -22,6 +23,7 @@ import service.CheckerService;
 import service.EntryService;
 import service.GoodsService;
 import service.PurchaserService;
+import service.ShipperService;
 import service.SupplierService;
 import service.WarehouseService;
 
@@ -98,7 +100,7 @@ public class EntryWindow {
 		
 		
 		Label lblNewLabel = new Label(shell, SWT.NONE);
-		lblNewLabel.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 15, SWT.NORMAL));
+		lblNewLabel.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 16, SWT.NORMAL));
 		lblNewLabel.setAlignment(SWT.CENTER);
 		lblNewLabel.setBounds(505, 20, 182, 53);
 		lblNewLabel.setText("进货入库");
@@ -194,7 +196,8 @@ public class EntryWindow {
 		        String[] parts = selectedBuyerId.split("\\."); // 使用点号作为分隔符拆分字符串
 		        String selectedId = parts[0]; // 获取拆分后的第一部分，即 ID
 		        String selectedQcId = QcId.getText();
-		       
+		        String[] qcparts = selectedQcId.split("\\."); // 使用点号作为分隔符拆分字符串
+		        String qcselectedId = qcparts[0]; // 获取拆分后的第一部分，即 ID
 		        String selectedOperatorId = employer.getText();
 		        int year = dateTime.getYear();
 		        int month = dateTime.getMonth() + 1; // Month index starts from 0, so increment by 1
@@ -216,7 +219,7 @@ public class EntryWindow {
 		        // 添加商品
 		        
 		        // 入库操作
-		        Entry entry = new Entry(localDateTime,selectedGoodsId,goodsPrice,goodsAmount,selectedQcId,Index.currentOperator.getId(),
+		        Entry entry = new Entry(localDateTime,selectedGoodsId,goodsPrice,goodsAmount,qcselectedId,Index.currentOperator.getId(),
 		        		selectedSupplier,selectedId,selectedNote);
 		        EntryService.insert(entry);
 
@@ -244,10 +247,6 @@ public class EntryWindow {
 		});
 		add.setBounds(410, 377, 114, 34);
 		add.setText("添加商品");
-		
-		Button button_1 = new Button(shell, SWT.NONE);
-		button_1.setBounds(590, 377, 114, 34);
-		button_1.setText("取消");
 		
 		
 		
@@ -289,7 +288,7 @@ public class EntryWindow {
 		QcId = new Combo(shell, SWT.NONE);
 		QcId.setBounds(461, 321, 160, 32);
 		for(CheckerInfo check:checkerInfos) {
-			QcId.add(check.getId());
+			QcId.add(check.getId()+'.'+check.getName());
 		}
 		
 		dateTime = new DateTime(shell, SWT.BORDER);
