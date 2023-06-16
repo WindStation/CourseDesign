@@ -243,7 +243,7 @@ public class Statistics_DeliverInfo {
 					TableItem item = new TableItem(table, SWT.NONE);
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					item.setText(new String[] { String.valueOf(d.getId()), d.getOutDate().format(formatter),
-							d.getGoodId(), String.valueOf(d.getAmount()), String.valueOf(d.getPrice()), CheckerService.find(d.getCheckerId()),
+							GoodsService.find(d.getGoodId()).getName(), String.valueOf(d.getAmount()), String.valueOf(d.getPrice()), CheckerService.find(d.getCheckerId()),
 							OperatorService.find(d.getOperatorId()).getName(), CustomerService.find(d.getCustomerId()).getName(),
 							ShipperService.find(d.getShipperId()), d.getNote() });
 				});
@@ -264,7 +264,7 @@ public class Statistics_DeliverInfo {
 					TableItem item = new TableItem(table, SWT.NONE);
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					item.setText(new String[] { String.valueOf(d.getId()), d.getOutDate().format(formatter),
-							d.getGoodId(), String.valueOf(d.getAmount()), String.valueOf(d.getPrice()), CheckerService.find(d.getCheckerId()),
+							GoodsService.find(d.getGoodId()).getName(), String.valueOf(d.getAmount()), String.valueOf(d.getPrice()), CheckerService.find(d.getCheckerId()),
 							OperatorService.find(d.getOperatorId()).getName(), CustomerService.find(d.getCustomerId()).getName(),
 							ShipperService.find(d.getShipperId()), d.getNote() });
 				});

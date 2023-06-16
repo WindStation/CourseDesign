@@ -15,7 +15,6 @@ public class DBOperation {
 
 	private static Connection connection = null;
 	private static Statement statement = null;
-//	public static ResultSet result = null;
 
 	// 查询语句
 	public static ResultSet query(String sqlQuery) {
@@ -42,8 +41,7 @@ public class DBOperation {
 		return res;
 	}
 
-	// 构造时建立连接 TODO 最后把这个恢复
-//	public DBOperation()
+	// 建立连接
 	public static void init() {
 		try {
 			Class.forName(DRIVERNAME);
@@ -76,7 +74,7 @@ public class DBOperation {
 		ResultSet result = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://mysql.sqlpub.com:3306/?serverTimezone=UTC",
+			connection = DriverManager.getConnection("jdbc:mysql://mysql.sqlpub.com:3306/?serverTimezone=UTC&autoReconnect=true",
 					"windstation", "c7ce4b64145e1872");
 			statement = connection.createStatement();
 			statement.executeUpdate("use goodsinventory");

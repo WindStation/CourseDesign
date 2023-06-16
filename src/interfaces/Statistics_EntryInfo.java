@@ -156,7 +156,7 @@ public class Statistics_EntryInfo {
 					TableItem item = new TableItem(table, SWT.NONE);
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					item.setText(new String[] { String.valueOf(en.getId()), en.getDate().format(formatter),
-							en.getGoodId(), String.valueOf(en.getAmount()), String.valueOf(en.getPrice()), CheckerService.find(en.getCheckerId()),
+							GoodsService.find(en.getGoodId()).getName(), String.valueOf(en.getAmount()), String.valueOf(en.getPrice()), CheckerService.find(en.getCheckerId()),
 							OperatorService.find(en.getOperatorId()).getName(), SupplierService.find(en.getSupplierId()).getName(), PurchaserService.find(en.getPurchaserId()), en.getNote() });
 				});
 
@@ -275,7 +275,7 @@ public class Statistics_EntryInfo {
 					TableItem item = new TableItem(table, SWT.NONE);
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					item.setText(new String[] { String.valueOf(en.getId()), en.getDate().format(formatter),
-							en.getGoodId(), String.valueOf(en.getAmount()), String.valueOf(en.getPrice()), 
+							GoodsService.find(en.getGoodId()).getName(), String.valueOf(en.getAmount()), String.valueOf(en.getPrice()), 
 							CheckerService.find(en.getCheckerId()),OperatorService.find(en.getOperatorId()).getName(), 
 							SupplierService.find(en.getSupplierId()).getName(), PurchaserService.find(en.getPurchaserId()), en.getNote()  });
 				});
